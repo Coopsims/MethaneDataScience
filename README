@@ -1,0 +1,39 @@
+README for Ben's Summary Data Analysis
+This Python program performs an in-depth statistical analysis on the 'BenSummaryJustMatrix.csv' dataset, mainly using libraries such as numpy, pandas, scipy, matplotlib, sklearn and statsmodels.
+
+The dataset contains sensor measurements related to air quality, such as resistance, ratio, relative humidity, temperature and target parts per million (PPM). The goal of this analysis is to develop a model that can accurately predict the target PPM value based on the given sensor measurements.
+
+Getting Started
+To run this program, you need to have the following Python libraries installed:
+
+numpy
+pandas
+scipy
+matplotlib
+sklearn
+statsmodels
+You can install these libraries using pip:
+
+Copy code
+pip install numpy pandas scipy matplotlib sklearn statsmodels
+In addition, you need to have the 'BenSummaryJustMatrix.csv' data file located in the 'Output' folder in your project directory.
+
+How it Works
+The program starts by loading the data from the CSV file and splitting it into training and testing sets.
+
+Next, it performs an exploratory data analysis by creating a scatter plot of Resistance against Predicted PPM, colored by Relative Humidity.
+
+The script includes two functions funct3 and funct which are used to fit the curve using SciPy's curve_fit function. These functions consider resistance, relative humidity and temperature as parameters to predict PPM.
+
+The script uses these functions to:
+
+Find the best parameters for these functions that minimize the error between the model predictions and the actual target PPM values.
+Calculate the Root Mean Squared Error (RMSE) to evaluate the performance of the model.
+Calculate the 95% confidence interval for different target PPM values.
+Calculate the R-squared score which shows how well the variance in the target variable (PPM) is predictable from the independent variables (Resistance, Relative Humidity, and Temperature).
+Various statistical tests are also conducted, such as calculating residuals, conducting a QQ plot test, computing F-statistics and p-value, and more.
+
+Finally, the script creates a series of color gradient plots to visualize the predicted PPM based on the sensor measurements of Resistance and Relative Humidity at different temperatures.
+
+Contribution
+Feel free to fork this project and add your own features or improvements. If you encounter any issues or have any questions, don't hesitate to open an issue in the repository.
