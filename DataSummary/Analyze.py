@@ -10,7 +10,7 @@ def summarize(df: Data, N_sensors, partitionSpots):
     for i in range(0, len(partitionSpots)):
         start = partitionSpots[i][0]
         end = partitionSpots[i][1]
-        for s in range(0, N_sensors):  # for each sensor
+        for s in [0,3,5,7,8,10,13,15]:  # for each sensor
 
             sensordf = pd.DataFrame(
                 [df.sensors[s].sensor, df.dataTarget.loc[start],
@@ -84,6 +84,7 @@ def autoSelectData(resistance, slope):
 
     return selectedSpots
 
+[[120,240],[540,660]]
 
 def selectPeriods(df, delta_t):
     pointer = 5
