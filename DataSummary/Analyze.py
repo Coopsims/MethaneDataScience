@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
-import scipy.stats as st
+import scipy.stats
 
 import Data
+
 
 def summarize(df: Data, N_sensors, partitionSpots):
     summary = pd.DataFrame()
@@ -10,7 +11,7 @@ def summarize(df: Data, N_sensors, partitionSpots):
     for i in range(0, len(partitionSpots)):
         start = partitionSpots[i][0]
         end = partitionSpots[i][1]
-        for s in [0,3,5,7,8,10,13,15]:  # for each sensor
+        for s in [0, 3, 5, 7, 8, 10, 13, 15]:  # for each sensor
 
             sensordf = pd.DataFrame(
                 [df.sensors[s].sensor, df.dataTarget.loc[start],
@@ -28,7 +29,6 @@ def summarize(df: Data, N_sensors, partitionSpots):
     return summary
 
 
-
 def generateConfidinceInterval(partitionSpots, resistance, nSensors):
     lowInterval = []
     highInterval = []
@@ -40,14 +40,14 @@ def generateConfidinceInterval(partitionSpots, resistance, nSensors):
             lowEnd = item[0]
             highEnd = item[1]
             tempDF = resistance.loc[lowEnd:highEnd, 'Resistance' + str(i)]
-            tempLowInterval, tempHighInterval = st.t.interval(alpha=0.95, df=len(tempDF), loc=np.mean(tempDF),
-                                                              scale=st.sem(tempDF))
+            tempLowInterval, tempHighInterval = scipy.stats.t.interval(0.95, df=len(tempDF) - 1, loc=np.mean(tempDF),
+                                                                       scale=np.std(tempDF))
             subLow.append(tempLowInterval)
             subHigh.append(tempHighInterval)
         lowInterval.append(subLow)
         highInterval.append(subHigh)
 
-    return lowInterval,highInterval
+    return lowInterval, highInterval
 
 
 def autoSelectData(resistance, slope):
@@ -84,7 +84,6 @@ def autoSelectData(resistance, slope):
 
     return selectedSpots
 
-[[120,240],[540,660]]
 
 def selectPeriods(df, delta_t):
     pointer = 5

@@ -47,7 +47,7 @@ import Data as da
 
 
 def main():
-    path = r'/Users/benfunk/DataspellProjects/MethaneDataScience/Raw Data'
+    path = r'../Raw Data'
     summary = pd.DataFrame()  # empty dataframe to hold summary results
     selectedData = pd.DataFrame()
     for filename in glob.glob(os.path.join(path, '*.csv')):
@@ -57,7 +57,7 @@ def main():
             fsummary = an.summarize(df=myData, N_sensors=16, partitionSpots=myData.testSpots)
             summary = pd.concat([summary, fsummary], ignore_index=True)
 
-    summary_fname = os.path.join('/Users/benfunk/DataspellProjects/MethaneDataScience/Output', 'With low Data .csv')
+    summary_fname = os.path.join('../Output', 'UsingRef0.csv')
     summary.to_csv(summary_fname)
 
 if __name__ == '__main__':
@@ -65,4 +65,4 @@ if __name__ == '__main__':
 
 
 
-#%%
+
