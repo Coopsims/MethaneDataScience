@@ -1,4 +1,5 @@
 import pandas as pd
+
 import Analyze as an
 import SensorInformation as si
 
@@ -21,26 +22,18 @@ class Data():
 
         # getting the resistance of each sensor and appending it to general file
         for s in range(0, 16):
-            # Find the rows where 'Target ppm' is 0, select the last 225 of these, and compute the mean
-            mean_of_last_225 = self.file.loc[self.file['Target ppm'] == 0, 'Vout' + str(s)].tail(225).mean()
-
-            tempResistance = (mean_of_last_225 * (5 - self.file['Vout' + str(s)])) / ((self.file['Vout' + str(s)]) * (5 - mean_of_last_225))
-
-            tempResistance.reset_index(drop=True, inplace=True)
-            tempResistance.name = 'Resistance' + str(s)
-            tempFrame = pd.DataFrame(tempResistance)
-
-
+            tempResistance = ((self.file['Vref' + str(s)] * (5 - self.file['Vout' + str(s)])) / (
+                    (self.file['Vout' + str(s)]) * (5 - self.file['Vref' + str(s)])))
+            tempFrame = pd.DataFrame(tempResistance, columns=['Resistance' + str(s)])
             self.file = pd.concat([self.file, tempFrame], axis=1)
-
-
-
 
 
         self.resistance = self.file.loc[:, 'Resistance0':'Resistance15']
 
         self.dataRatio = self.dataVOut.to_numpy() / self.dataVRef.to_numpy()
         self.dataRatio = pd.DataFrame(self.dataRatio)
+
+        self.partitionSpots = an.autoSelectData(self.resistance, slope)
 
         self.dataTarget = self.file.loc[:, 'Target ppm']
 
