@@ -12,6 +12,10 @@ scipy
 matplotlib
 sklearn
 statsmodels
+multiprocessing
+joblib
+tqdm
+warnings
 You can install these libraries using pip:
 
 Copy code
