@@ -37,7 +37,7 @@ class Data():
 
         self.dataTarget = self.file.loc[:, 'Target ppm']
 
-        self.dataHumid = self.file.loc[:, 'Humidity%']
+        self.dataHumid = self.file.loc[:, '%Humidity']
 
         self.testSpots = an.selectPeriods(self.file, 225)
 

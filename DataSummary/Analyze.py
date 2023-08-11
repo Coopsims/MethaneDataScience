@@ -16,8 +16,8 @@ def summarize(df: Data, N_sensors, partitionSpots):
             sensordf = pd.DataFrame(
                 [df.sensors[s].sensor, df.dataTarget.loc[start],
                  df.resistance.loc[start:end, 'Resistance' + str(s)].mean(),
-                 df.file.loc[start:end, 'SHTTemp(C)'].mean(),
-                 df.file.loc[start:end, 'Humidity%'].mean(),
+                 df.file.loc[start:end, 'Temp(c)'].mean(),
+                 df.file.loc[start:end, '%Humidity'].mean(),
                  low[i][s], high[i][s],
                  df.dataRatio.loc[start:end].mean(numeric_only=True).mean()]).T
             sensordf.columns = ['SensorID', 'Target PPM', 'Resistance', 'Temperature',
