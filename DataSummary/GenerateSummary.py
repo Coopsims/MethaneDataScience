@@ -47,7 +47,7 @@ import Data as da
 
 
 def main():
-    path = r'../Low PPM Tests'
+    path = r'../Raw Data'
     summary = pd.DataFrame()  # empty dataframe to hold summary results
     for filename in glob.glob(os.path.join(path, '*.csv')):
         with open(os.path.join(os.getcwd(), filename)) as file:
@@ -56,7 +56,7 @@ def main():
             fsummary = an.summarize(df=myData, N_sensors=16, partitionSpots=myData.testSpots)
             summary = pd.concat([summary, fsummary], ignore_index=True)
 
-    summary_fname = os.path.join('../Output', 'LowPPMMatrix.csv')
+    summary_fname = os.path.join('../Output', 'allDataEver.csv')
     summary.to_csv(summary_fname)
 
 if __name__ == '__main__':

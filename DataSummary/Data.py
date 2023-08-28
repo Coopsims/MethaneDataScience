@@ -37,7 +37,21 @@ class Data():
 
         self.dataTarget = self.file.loc[:, 'Target ppm']
 
-        self.dataHumid = self.file.loc[:, '%Humidity']
+        # Find the column name that starts with 'humidity' and ends with '%' or starts with '%' and ends with 'humidity' (case-insensitive)
+        humidity_column = next((col for col in self.file.columns if (col.lower().startswith('humidity') and col.endswith('%')) or (col.startswith('%') and col.lower().endswith('humidity'))), None)
+
+        if humidity_column:
+            self.dataHumid = self.file.loc[:, humidity_column]
+        else:
+            print("No matching humidity column found")
+
+        Temp_column = next((col for col in self.file.columns if (col.lower().startswith('temp') and col.endswith('(c)')) or ( col.lower().endswith('temp(c)'))), None)
+
+        if humidity_column:
+            self.dataTemp = self.file.loc[:, Temp_column]
+        else:
+            print("No matching humidity column found")
+
 
         self.testSpots = an.selectPeriods(self.file, 225)
 

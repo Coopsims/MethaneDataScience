@@ -8,6 +8,9 @@ import Data
 def summarize(df: Data, N_sensors, partitionSpots):
     summary = pd.DataFrame()
     low, high = generateConfidinceInterval(partitionSpots, df.resistance, 16)
+
+
+
     for i in range(0, len(partitionSpots)):
         start = partitionSpots[i][0]
         end = partitionSpots[i][1]
@@ -16,8 +19,8 @@ def summarize(df: Data, N_sensors, partitionSpots):
             sensordf = pd.DataFrame(
                 [df.sensors[s].sensor, df.dataTarget.loc[start],
                  df.resistance.loc[start:end, 'Resistance' + str(s)].mean(),
-                 df.file.loc[start:end, 'Temp(c)'].mean(),
-                 df.file.loc[start:end, '%Humidity'].mean(),
+                 df.dataTemp.loc[start:end].mean(),
+                 df.dataHumid.loc[start:end].mean(),
                  low[i][s], high[i][s],
                  df.dataRatio.loc[start:end].mean(numeric_only=True).mean()]).T
             sensordf.columns = ['SensorID', 'Target PPM', 'Resistance', 'Temperature',
