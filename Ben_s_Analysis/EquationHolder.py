@@ -55,7 +55,7 @@ def Funk_Equation_FullPPM(X):
 
 
 '''
-Temperature was left in for this equation as it needs to compromise between the lower ppm needing it and the 
+Temperature was left out for this equation as it needs to compromise between the lower ppm needing it and the 
 higher ppm not. This equation was trained on 0ppm to 1000ppm with: steps:0,2,5,10,20,50,200,400,600,800,
 1000 PPM temperatures: 35, 20, 8 and humidity 0%, 15%, 30%, 45%, 60%
 
