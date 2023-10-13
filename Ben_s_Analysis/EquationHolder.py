@@ -34,7 +34,8 @@ def Funk_Equation_HighPPM(X):
 
 
 '''
-At higher ppm temperature doesn't have an effect on the resistance ratio as such is not useful in the equation. 
+At higher ppm temperature doesn't have an effect on the resistance ratio as such is not useful in the equation.
+This equation does not have temperature, but I still kept it as an input to make switching between equations easier. 
 This equation was trained on 0ppm to 1000ppm with: 
 steps:0,200,400,600,800,1000 PPM
 temperatures: 35, 20, 8
@@ -50,14 +51,16 @@ temperature is in celsius
 
 def Funk_Equation_FullPPM(X):
     R, H, T = X
-    stuff = 0.976342 ** ((((-1 * R) / (H ** -0.359984)) * -11.905327) + (-1 * H * 0.531209) + -337.584777) + 17.978429
+    stuff = 0.981309 ** ((((-1 * R) / (H ** -0.359548)) * -15.121040) + (-1 * H * 0.671743) + (-1 * T * -0.008924)
+                         - 428.596019) + 17.898183
     return stuff
 
-
 '''
-Temperature was left out for this equation as it needs to compromise between the lower ppm needing it and the 
-higher ppm not. This equation was trained on 0ppm to 1000ppm with: steps:0,2,5,10,20,50,200,400,600,800,
-1000 PPM temperatures: 35, 20, 8 and humidity 0%, 15%, 30%, 45%, 60%
+Temperature was included for this equation as it needs to compromise between the lower ppm needing it and the 
+higher ppm not. This equation was trained on 0ppm to 1000ppm with: 
+steps:0,2,5,10,20,50,200,400,600,800,1000 PPM 
+temperatures: 35, 20, 8  
+humidity: 0%, 15%, 30%, 45%, 60%
 
 For inputting data it should be in vector form: [Resistance Ratio, Humidity, Temperature]
 resistance Ratio = (𝑉𝑜𝑢𝑡 * (5−𝑉𝑟𝑒𝑓))/(𝑉𝑟𝑒𝑓 * (5−𝑉𝑜𝑢𝑡))
