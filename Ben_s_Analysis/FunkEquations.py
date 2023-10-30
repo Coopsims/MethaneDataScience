@@ -5,10 +5,22 @@ All equations here are useful for predicting ppm based on a figaro CH4 sensor.
 '''
 import numpy as np
 
+# Given variables
+a = 0.978834
+b = -0.444923
+c = -17.419778
+d = 1.327338
+e = -1.162677
+f = 0.360602
+g = 1.711512
+h = -326.893623
+i = 0.201709
+j = -11.575089
 
 def Funk_Equation_LowPPM2(X):
     R, H, T = X
-    stuff = 3.658530 * np.exp((((-1 * R) / (H ** -0.705161)) * 0.042578) + (-1 * H * -0.029454) + 3.716771) - 1.530641
+    stuff = a ** (((-np.log(R + 1) / (H ** b)) * c) + (-1 * H * d) + (-1 * T * e)
+                  + (((-1 * T) / (H ** f)) * g) + h) * (1 / (1 + i * R)) + j
     return stuff
 
 
