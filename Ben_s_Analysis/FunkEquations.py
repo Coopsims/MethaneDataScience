@@ -4,30 +4,37 @@ All equations here are useful for predicting ppm based on a figaro CH4 sensor.
 
 '''
 import numpy as np
+from sympy import log
 
 # Given variables
-a = 0.978834
-b = -0.444923
-c = -17.419778
-d = 1.327338
-e = -1.162677
-f = 0.360602
-g = 1.711512
-h = -326.893623
-i = 0.201709
-j = -11.575089
+a = 1.361119
+b = -0.758095
+c = 0.118785
+d = 2.432037
+e = 0.942663
+f = 0.568506
+g = 0.673565
+h = 0.938100
+i = -0.308766
+j = -47.899685
+k = 1.201892
+l = 3.291883
+m = 1.936693
+n = 11.455196
+o = -2.409027
+
 
 def Funk_Equation_LowPPM2(X):
     R, H, T = X
-    stuff = a ** (((-np.log(R + 1) / (H ** b)) * c) + (-1 * H * d) + (-1 * T * e)
-                  + (((-1 * T) / (H ** f)) * g) + h) * (1 / (1 + i * R)) + j
+    stuff = a ** ((-1 * R / (H ** b)) * c + d) * e ** (-1 * H * f + g) \
+            * h ** (-1 * T * i + j) * k ** (-1 * R ** (1 / (T * l)) * m + n) + o
     return stuff
 
 
 def Funk_Equation_LowPPM(X):
     R, H, T = X
     stuff = 0.972102 ** ((((-1 * R) / (H ** -0.664524)) * -1.681143) + (-1 * H * 1.118612) + (-1 * T * -1.307406)
-                         + (((-1 * T) / (H ** 0.236542)) * 1.625877) + -187.456885) - 3.086685
+                         + (((-1 * T) / (H ** 0.236542)) * 1.625877) - 187.456885) - 3.086685
     return stuff
 
 
