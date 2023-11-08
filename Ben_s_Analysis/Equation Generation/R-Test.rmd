@@ -1,0 +1,143 @@
+---
+title: "R Notebook"
+output: html_notebook
+author: "Ben Funk"
+---
+```{r}
+library(mgcv)
+```
+```{r}
+# thin plate spline
+data <- read.csv("./Output/LowPPMMatrix.csv")
+data <- data[ , -c(7, 8, 9)]
+data$Target.PPM <- data$Target.PPM + 4.21
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(data, aes(x = Resistance, y = Target.PPM)) +
+  geom_point() +
+  labs(title = "PPM vs Resistance", x = "Resistance", y = "Target PPM")
+
+# Plot PPM vs Humidity
+ggplot(data, aes(x = RelativeHumidity, y = Resistance)) +
+  geom_point() +
+  labs(title = "PPM vs Humidity", x = "Humidity", y = "Resistance")
+
+# Plot PPM vs Temperature
+ggplot(data, aes(x = Temperature, y = Resistance)) +
+  geom_point() +
+  labs(title = "PPM vs Temperature", x = "Temperature", y = "Resistance")
+
+```
+
+```{r}
+# Normalize the RelativeHumidity
+data$NormalizedRelativeHumidity <- (data$RelativeHumidity - min(data$RelativeHumidity)) / (max(data$RelativeHumidity) - min(data$RelativeHumidity))
+
+# Normalize the Resistance
+data$NormalizedResistance <- (data$Resistance - min(data$Resistance)) / (max(data$Resistance) - min(data$Resistance))
+
+# Normalize the Temperature
+data$NormalizedTemperature <- (data$Temperature - min(data$Temperature)) / (max(data$Temperature) - min(data$Temperature))
+
+```
+
+```{r}
+# Fit the linear regression model using the normalized predictors
+model <- lm(log(Target.PPM) ~ Resistance + RelativeHumidity + Temperature + Resistance*RelativeHumidity + Resistance*Temperature + Resistance*RelativeHumidity*Temperature, data=data)
+
+# Get a summary of the model
+summary(model)
+plot(model)
+```
+```{r}
+library(car)
+data$ResistanceTemperatureRatio <- data$Resistance / data$Temperature
+
+# Fit the linear regression model using the normalized predictors
+model <- lm(log(Target.PPM) ~ Resistance + RelativeHumidity + Temperature + ResistanceTemperatureRatio + Resistance*RelativeHumidity + Resistance*Temperature + Resistance*RelativeHumidity*Temperature, data=data)
+
+# Get a summary of the model
+summary_model <- summary(model)
+
+# If you want to plot the diagnostics for the linear model, you can directly call plot on the model object
+#plot(model)
+
+# If you want to use anova, you would typically compare this model to a simpler model or examine the table of effects
+# For example, to compare to a model without interactions:
+model_simpler <- lm(log(Target.PPM) ~ Resistance + RelativeHumidity + Temperature, data=data)
+anova_model <- anova(model_simpler, model)
+
+summary_model
+anova_model
+```
+```{r}
+# Predict the log-transformed Target PPM using the model
+predicted_log_values <- predict(model)
+
+# Back-transform from the log scale to the PPM scale
+predicted_values <- exp(predicted_log_values)
+actual_values <- data$Target.PPM
+
+# Calculate the residuals on the original PPM scale
+residuals_ppm <- actual_values - predicted_values
+
+# Calculate the RMSE on the original PPM scale
+rmse_ppm <- sqrt(mean(residuals_ppm^2))
+rmse_ppm
+
+```
+```{r}
+# Fit a GAM with a thin plate spline including Resistance, RelativeHumidity, and Temperature
+model <- gam(Target.PPM ~ s(Resistance, RelativeHumidity, Temperature), data = data)
+
+# Summary of the model
+summary(model)
+plot(model)
+```
+```{r}
+# Predict the log-transformed Target PPM using the model
+# Generate predictions from the model
+predicted_values <- predict(model, data)
+
+# Calculate residuals
+residuals <- data$Target.PPM - predicted_values
+
+# Calculate RMSE
+rmse <- sqrt(mean(residuals^2))
+
+# Print the RMSE
+rmse
+```
+```{r}
+# Save the model to a file
+saveRDS(model, "gam_model.rds")
+
+# Later on, you can load the model
+testModel <- readRDS("gam_model.rds")
+
+```
+```{r}
+new_resistance_value <- 5.5    # hypothetical value
+new_relative_humidity_value <- 50  # hypothetical value
+new_temperature_value <- 20   # hypothetical value
+
+# Create a new data frame with these values
+new_data <- data.frame(Resistance = c(new_resistance_value),
+                       RelativeHumidity = c(new_relative_humidity_value),
+                       Temperature = c(new_temperature_value))
+
+# Predict
+predicted_values <- predict(testModel, newdata = new_data)
+
+# Print the predicted values
+predicted_values
+```
+```{r}
+#Testing with normalized data
+model <- lm(log(Target.PPM) ~  NormalizedResistance + NormalizedRelativeHumidity + NormalizedTemperature +  NormalizedResistance*NormalizedRelativeHumidity + NormalizedResistance*NormalizedTemperature + NormalizedResistance*NormalizedRelativeHumidity*NormalizedTemperature, data = data)
+summary(model)
+plot(model)
+```

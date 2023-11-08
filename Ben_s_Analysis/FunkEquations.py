@@ -7,29 +7,31 @@ import numpy as np
 from sympy import log
 
 # Given variables
-a = 1.079704
-b = 0.673233
-c = 1.758433
-d = 33.655622
-e = 1.140915
-f = -0.412626
-g = 8.193271
-h = 1.603824
-i = 0.033940
-j = 3.623566
-k = 0.948238
-l = 1.203444
-m = -1.005580
-n = -10.322900
-o = -0.019362
-p = 0.607107
-q = -2.573540
+a = 1.079739
+b = 0.607106
+c = 0.673236
+d = 1.757681
+e = 33.338329
+f = 1.139713
+g = -0.415958
+h = 8.016510
+i = 1.612821
+j = 0.033543
+k = 3.620199
+l = 0.948374
+m = 1.201544
+n = -1.006729
+o = -11.036648
+p = -0.019362
+q = -2.573466
 
-
+'''
+Least squared might not be the best way to go since it assumes everything is normally distrabuted. look into transforming.
+'''
 def Funk_Equation_LowPPM2(X):
     R, H, T = X
-    stuff = a ** ( (-1*R**(p) * (H ** b)) * c + d) * e ** (-1 * H * f + g) * h ** (-1 * T * i + j) \
-            * k ** (-1*R*(1/(T*l))*m+n) + o*(R*T) +q
+    stuff = a ** ( (-1*R**(b) * (H ** c)) * d + e) * f ** (-1 * H * g + h) * i ** (-1 * T * j + k) * l ** \
+           (-1*R*(1/(T*m))*n+o) + p*(R*T) +q
     return stuff
 
 
