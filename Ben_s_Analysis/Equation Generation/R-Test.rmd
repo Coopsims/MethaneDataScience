@@ -91,7 +91,7 @@ rmse_ppm
 ```
 ```{r}
 # Fit a GAM with a thin plate spline including Resistance, RelativeHumidity, and Temperature
-model <- gam(Target.PPM ~ s(Resistance, RelativeHumidity, Temperature), data = data)
+model <- gam(log(Target.PPM) ~ s(Resistance, RelativeHumidity, Temperature), data = data)
 
 # Summary of the model
 summary(model)
@@ -100,7 +100,7 @@ plot(model)
 ```{r}
 # Predict the log-transformed Target PPM using the model
 # Generate predictions from the model
-predicted_values <- predict(model, data)
+predicted_values <- exp(predict(model, data))
 
 # Calculate residuals
 residuals <- data$Target.PPM - predicted_values
