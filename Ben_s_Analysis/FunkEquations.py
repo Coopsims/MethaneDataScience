@@ -5,41 +5,12 @@ All equations here are useful for predicting ppm based on a figaro CH4 sensor.
 '''
 import numpy as np
 from sympy import log
-
-# Given variables
-a = 1.079739
-b = 0.607106
-c = 0.673236
-d = 1.757681
-e = 33.338329
-f = 1.139713
-g = -0.415958
-h = 8.016510
-i = 1.612821
-j = 0.033543
-k = 3.620199
-l = 0.948374
-m = 1.201544
-n = -1.006729
-o = -11.036648
-p = -0.019362
-q = -2.573466
-
-'''
-Least squared might not be the best way to go since it assumes everything is normally distrabuted. look into transforming.
-'''
-def Funk_Equation_LowPPM2(X):
-    R, H, T = X
-    stuff = a ** ( (-1*R**(b) * (H ** c)) * d + e) * f ** (-1 * H * g + h) * i ** (-1 * T * j + k) * l ** \
-           (-1*R*(1/(T*m))*n+o) + p*(R*T) +q
-    return stuff
-
-# a = 0.988838 b = 0.008045 c = -383.031815 d = 58.752943 e = 1.558430 f = 0.002565 g = 2.617659 h = -0.002745 i = -516.666918 j = -0.867178
+# a = 0.369232 b = 0.111613 c = -4.714868 d = -0.003684 e = -6.026000 f = 2.455307 g = 0.000230 h = 2.455943 i = -5.899531 j = -2.571275
 def Funk_Equation_LowPPM(X):
     R, H, T = X
-    stuff = 0.98883 ** ((((-1 * R) / (H ** 0.008045)) * -383.031815) + (-1 * H * 58.752943) + (-1 * T * 1.558430)
-                         + (((-1 * T*0.002565) / (H ** 2.617659)) * -0.002745) -516.66691) - 0.867178
-    return stuff
+    ppm_prediction = 0.369232 ** ((((-1 * R) / (H ** 0.111613)) * -4.714868) + (-1 * H * -0.003684) + (-1 * T * -6.026000)
+                         + (((-1 * T*2.455307) / (H ** 0.000230)) * 2.455943) -5.899531)  - 2.571275
+    return ppm_prediction
 
 
 '''
@@ -70,27 +41,6 @@ This equation was trained on 0ppm to 1000ppm with:
 steps:0,200,400,600,800,1000 PPM
 temperatures: 35, 20, 8
 and humidity 0%, 15%, 30%, 45%, 60%
-
-For inputting data it should be in vector form: [Resistance Ratio, Humidity, Temperature]
-resistance Ratio = (𝑉𝑜𝑢𝑡 * (5−𝑉𝑟𝑒𝑓))/(𝑉𝑟𝑒𝑓 * (5−𝑉𝑜𝑢𝑡))
-humidity should be entered in the form of a number between 0-100
-temperature is in celsius
-
-'''
-
-
-def Funk_Equation_FullPPM(X):
-    R, H, T = X
-    stuff = 0.981309 ** ((((-1 * R) / (H ** -0.359548)) * -15.121040) + (-1 * H * 0.671743) + (-1 * T * -0.008924)- 428.596019) + 17.898183
-    return stuff
-
-
-'''
-Temperature was included for this equation as it needs to compromise between the lower ppm needing it and the 
-higher ppm not. This equation was trained on 0ppm to 1000ppm with: 
-steps:0,2,5,10,20,50,200,400,600,800,1000 PPM 
-temperatures: 35, 20, 8  
-humidity: 0%, 15%, 30%, 45%, 60%
 
 For inputting data it should be in vector form: [Resistance Ratio, Humidity, Temperature]
 resistance Ratio = (𝑉𝑜𝑢𝑡 * (5−𝑉𝑟𝑒𝑓))/(𝑉𝑟𝑒𝑓 * (5−𝑉𝑜𝑢𝑡))
