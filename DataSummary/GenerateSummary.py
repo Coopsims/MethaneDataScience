@@ -52,7 +52,7 @@ def main():
             fsummary = an.summarize(df=myData, N_sensors=16, partitionSpots=myData.testSpots)
             summary = pd.concat([summary, fsummary], ignore_index=True)
 
-    summary_fname = os.path.join('/Users/benfunk/DataspellProjects/MethaneDataScience/Output', 'FullVOMatrix.csv')
+    summary_fname = os.path.join('/Users/benfunk/DataspellProjects/MethaneDataScience/Output', 'FullVRefMatrix.csv')
     summary.to_csv(summary_fname)
 
 if __name__ == '__main__':

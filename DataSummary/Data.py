@@ -24,23 +24,30 @@ class Data():
 
         # getting the resistance of each sensor and appending it to general file
         for s in range(0, 16):
-            # Selecting the reference Vout values being used from the data and calculating the mean
-            reference0 = self.dataVOut.iloc[self.testSpots[0][0]:self.testSpots[0][1]]['Vout' + str(s)]
-            reference0_avg = reference0.mean()
-
-            # Calculating resistance
-            tempResistance = ((reference0_avg * (5 - self.file['Vout' + str(s)])) /
-                      (self.file['Vout' + str(s)] * (5 - reference0_avg)))
-
-            # Ensuring tempResistance is a Series and has the same index as self.file
-            if not isinstance(tempResistance, pd.Series):
-                tempResistance = pd.Series(tempResistance, index=self.file.index)
-
-            # Creating a DataFrame from tempResistance
-            tempFrame = pd.DataFrame({f'Resistance{s}': tempResistance})
-
-            # Concatenating with the main DataFrame
+            tempResistance = ((self.file['Vref' + str(s)] * (5 - self.file['Vout' + str(s)])) / (
+                    (self.file['Vout' + str(s)]) * (5 - self.file['Vref' + str(s)])))
+            tempFrame = pd.DataFrame(tempResistance, columns=['Resistance' + str(s)])
             self.file = pd.concat([self.file, tempFrame], axis=1)
+
+        # # getting the resistance of each sensor and appending it to general file
+        # for s in range(0, 16):
+        #     # Selecting the reference Vout values being used from the data and calculating the mean
+        #     reference0 = self.dataVOut.iloc[self.testSpots[0][0]:self.testSpots[0][1]]['Vout' + str(s)]
+        #     reference0_avg = reference0.mean()
+        #
+        #     # Calculating resistance
+        #     tempResistance = ((reference0_avg * (5 - self.file['Vout' + str(s)])) /
+        #               (self.file['Vout' + str(s)] * (5 - reference0_avg)))
+        #
+        #     # Ensuring tempResistance is a Series and has the same index as self.file
+        #     if not isinstance(tempResistance, pd.Series):
+        #         tempResistance = pd.Series(tempResistance, index=self.file.index)
+        #
+        #     # Creating a DataFrame from tempResistance
+        #     tempFrame = pd.DataFrame({f'Resistance{s}': tempResistance})
+        #
+        #     # Concatenating with the main DataFrame
+        #     self.file = pd.concat([self.file, tempFrame], axis=1)
 
 
         self.resistance = self.file.loc[:, 'Resistance0':'Resistance15']
