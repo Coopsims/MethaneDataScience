@@ -101,4 +101,5 @@ def selectPeriods(df, delta_t):
     endSpots.append(len(df) - 3)
     for item in endSpots:
         setPoints.append([item - delta_t, item])
+    print(setPoints)
     return setPoints

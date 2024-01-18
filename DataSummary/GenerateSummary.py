@@ -43,16 +43,17 @@ import Data as da
 
 
 def main():
-    path = r'/Users/benfunk/DataspellProjects/MethaneDataScience/Low PPM Tests'
+    path = r'/Users/benfunk/DataspellProjects/MethaneDataScience/New High-level Raw'
     summary = pd.DataFrame()  # empty dataframe to hold summary results
     for filename in glob.glob(os.path.join(path, '*.csv')):
+        print(filename)
         with open(os.path.join(os.getcwd(), filename)) as file:
             myData = da.Data(csvFile=file, slope=6.7e-05)
 
             fsummary = an.summarize(df=myData, N_sensors=16, partitionSpots=myData.testSpots)
             summary = pd.concat([summary, fsummary], ignore_index=True)
 
-    summary_fname = os.path.join('/Users/benfunk/DataspellProjects/MethaneDataScience/Output', 'FullVRefMatrix.csv')
+    summary_fname = os.path.join('/Users/benfunk/DataspellProjects/MethaneDataScience/Output', '0-1000VOutMatrix.csv')
     summary.to_csv(summary_fname)
 
 if __name__ == '__main__':
@@ -61,3 +62,5 @@ if __name__ == '__main__':
 
 
 
+
+#%%
